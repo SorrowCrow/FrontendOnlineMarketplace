@@ -12,6 +12,10 @@ const ApiRequests = {
     method: "POST",
     path: "/api/auth/signup",
   },
+  listings: {
+    method: "GET",
+    path: "/api/listings/page",
+  },
 };
 
 type UserInput = {
@@ -24,6 +28,12 @@ type UserInput = {
     password: string;
     name: string;
     surname: string;
+  };
+  listings: {
+    page?: string;
+    size?: string;
+    ascending?: boolean;
+    sortBy?: string;
   };
 };
 
@@ -43,15 +53,24 @@ const useApi = () => {
   ): Promise<void>;
 
   async function loadData(
+    request: "listings",
+    body: undefined,
+    params: UserInput["listings"]
+  ): Promise<void>;
+
+  async function loadData(
     request: keyof typeof ApiRequests,
-    body: UserInput[keyof UserInput]
+    body?: UserInput[keyof UserInput],
+    params?: UserInput[keyof UserInput]
   ): Promise<void> {
     setLoading(true);
 
     axios({
-      url: apiUrl + ApiRequests[request].path,
+      baseURL: apiUrl,
+      url: ApiRequests[request].path,
       method: ApiRequests[request].method,
       data: body,
+      params,
     })
       .then(function (response) {
         setData(response.data);
