@@ -8,11 +8,10 @@ import {
   Text,
   Link as ChakraLink,
   Icon,
-  Show,
 } from "@chakra-ui/react";
 import { FC, HTMLAttributes, useEffect } from "react";
 import logo from "../../assets/logo.svg";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
 const Listings: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {

@@ -16,6 +16,10 @@ const ApiRequests = {
     method: "GET",
     path: "/api/listings/page",
   },
+  createListing: {
+    method: "POST",
+    path: "/api/listings",
+  },
 };
 
 type UserInput = {
@@ -35,12 +39,27 @@ type UserInput = {
     ascending?: boolean;
     sortBy?: string;
   };
+  createListing: {
+    type: string;
+    title: string;
+    description: string;
+    price: number;
+    priceUnit: string;
+    location: string;
+    userID: number;
+    categoryID: number;
+  };
 };
 
 const useApi = () => {
   const [data, setData] = useState<any>();
 
   const [loading, setLoading] = useState(false);
+
+  async function loadData(
+    request: "createListing",
+    body: UserInput["createListing"]
+  ): Promise<void>;
 
   async function loadData(
     request: "signup",
