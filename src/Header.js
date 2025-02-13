@@ -6,7 +6,6 @@ import languageIcon from "./assets/icons8-world-24.png";
 import userIcon from "./assets/icons8-male-user-48.png";
 import cartIcon from "./assets/icons8-cart-32.png";
 
-
 const Header = () => {
   return (
     <header className="header">
@@ -26,7 +25,11 @@ const Header = () => {
               className="search-input"
             />
             <button className="search-button">
-              <img src={searchIcon} alt="Search" className="search-icon-image" />
+              <img
+                src={searchIcon}
+                alt="Search"
+                className="search-icon-image"
+              />
             </button>
           </div>
         </div>
@@ -44,13 +47,19 @@ const Header = () => {
         <a href="#" className="nav-link nav-all">
           <span className="hamburger-icon">☰</span> ALL
         </a>
-        {["HOME", "AUTO", "CLOTHES", "SHOES", "ELECTRONICS", "BEAUTY", "REVIEWS"].map(
-          (item) => (
-            <a key={item} href="#" className="nav-link">
-              {item}
-            </a>
-          )
-        )}
+        {[
+          "HOME",
+          "AUTO",
+          "CLOTHES",
+          "SHOES",
+          "ELECTRONICS",
+          "BEAUTY",
+          "REVIEWS",
+        ].map((item) => (
+          <a key={item} href="#" className="nav-link">
+            {item}
+          </a>
+        ))}
       </nav>
     </header>
   );
