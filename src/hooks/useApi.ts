@@ -27,6 +27,18 @@ const ApiRequests = {
     method: "PUT",
     path: "/api/user",
   },
+  getCart: {
+    method: "GET",
+    path: "/api/cart",
+  },
+  removeFromCart: {
+    method: "POST",
+    path: "/api/cart/remove/",
+  },
+  checkout: {
+    method: "POST",
+    path: "/api/payments/create-session",
+  },
 };
 
 type UserInput = {
@@ -61,12 +73,26 @@ type UserInput = {
     name: string;
     surname: string;
   };
+  removeFromCart: {
+    listingID: string;
+  };
 };
 
 const useApi = () => {
   const [data, setData] = useState<any>();
 
   const [loading, setLoading] = useState(false);
+
+  async function loadData(request: "checkout"): Promise<void>;
+
+  async function loadData(
+    request: "removeFromCart",
+    body: undefined,
+    params: undefined,
+    path: UserInput["removeFromCart"]
+  ): Promise<void>;
+
+  async function loadData(request: "getCart"): Promise<void>;
 
   async function loadData(
     request: "updateUser",
@@ -99,13 +125,19 @@ const useApi = () => {
   async function loadData(
     request: keyof typeof ApiRequests,
     body?: UserInput[keyof UserInput],
-    params?: UserInput[keyof UserInput]
+    params?: UserInput[keyof UserInput],
+    path?: UserInput[keyof UserInput]
   ): Promise<void> {
     setLoading(true);
 
     fetch(
       apiUrl +
         ApiRequests[request].path +
+        (path
+          ? Object.values(JSON.parse(JSON.stringify(path)))
+              .join("/")
+              .toString()
+          : "") +
         (params
           ? "?" +
             new URLSearchParams(JSON.parse(JSON.stringify(params))).toString()

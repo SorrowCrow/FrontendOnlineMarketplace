@@ -67,6 +67,7 @@ const Listings: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               display="flex"
               mt={5}
               lineHeight="60px"
+              height="60px"
               gap={5}
               lg={{
                 gap: 0,
@@ -88,6 +89,7 @@ const Listings: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                   rounded="md"
                   borderColor="lightgray"
                   borderWidth="1px"
+                  h="100%"
                   lg={{
                     borderWidth: 0,
                     flexBasis: 0,
@@ -138,7 +140,7 @@ const Listings: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                 </ChakraLink>
 
                 {data.totalPages > 2 && (
-                  <Button variant="plain" backgroundColor="bg.subtle">
+                  <Button variant="plain" backgroundColor="bg.subtle" h="100%">
                     {data.number + 1}
                   </Button>
                 )}
@@ -165,6 +167,7 @@ const Listings: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                     borderWidth: 0,
                     flexBasis: 0,
                   }}
+                  h="100%"
                 >
                   Next{" "}
                   <Icon>
