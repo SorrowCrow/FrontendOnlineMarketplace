@@ -1,22 +1,23 @@
 import React from "react";
 import "./Header.css";
-import logo from "../assets/logo.png"; 
-import searchIcon from "../assets/search-svgrepo-com.svg";
-import languageIcon from "../assets/icons8-world-24.png";
-import userIcon from "../assets/icons8-male-user-48.png";
-import cartIcon from "../assets/icons8-cart-32.png";
+import logo1 from "./assets/marketplacelogo.svg";
+import searchIcon from "./assets/search-svgrepo-com.svg";
+import languageIcon from "./assets/icons8-world-24.png";
+import userIcon from "./assets/icons8-male-user-48.png";
+import cartIcon from "./assets/icons8-cart-32.png";
+
 
 const Header = () => {
   return (
     <header className="header">
-      {/* Верхняя часть шапки */}
+      {/* верх */}
       <div className="header-top">
-        {/* Логотип */}
+        {/* Лого */}
         <div className="logo">
-          <img src={logo} alt="Logo" className="logo-image" />
+          <img src={logo1} alt="Logo" className="logo-image" />
         </div>
 
-        {/* Строка поиска */}
+        {/* поиск */}
         <div className="search-bar">
           <div className="search-container">
             <input
@@ -30,7 +31,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Иконки справа */}
+        {/* иконки справа */}
         <div className="nav-icons">
           <img src={languageIcon} alt="Language" className="icon-image" />
           <img src={userIcon} alt="User" className="icon-image" />
@@ -38,7 +39,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Меню навигации */}
+      {/* Меню  */}
       <nav className="nav-menu">
         <a href="#" className="nav-link nav-all">
           <span className="hamburger-icon">☰</span> ALL
