@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL || "ApiUrlNotSet";
@@ -19,6 +18,14 @@ const ApiRequests = {
   createListing: {
     method: "POST",
     path: "/api/listings",
+  },
+  getUser: {
+    method: "GET",
+    path: "/api/user",
+  },
+  updateUser: {
+    method: "PUT",
+    path: "/api/user",
   },
 };
 
@@ -49,12 +56,24 @@ type UserInput = {
     userID: number;
     categoryID: number;
   };
+  updateUser: {
+    email: string;
+    name: string;
+    surname: string;
+  };
 };
 
 const useApi = () => {
   const [data, setData] = useState<any>();
 
   const [loading, setLoading] = useState(false);
+
+  async function loadData(
+    request: "updateUser",
+    body: UserInput["updateUser"]
+  ): Promise<void>;
+
+  async function loadData(request: "getUser"): Promise<void>;
 
   async function loadData(
     request: "createListing",
@@ -84,18 +103,29 @@ const useApi = () => {
   ): Promise<void> {
     setLoading(true);
 
-    axios({
-      baseURL: apiUrl,
-      url: ApiRequests[request].path,
-      method: ApiRequests[request].method,
-      data: body,
-      params,
-    })
+    fetch(
+      apiUrl +
+        ApiRequests[request].path +
+        (params
+          ? "?" +
+            new URLSearchParams(JSON.parse(JSON.stringify(params))).toString()
+          : ""),
+      {
+        method: ApiRequests[request].method,
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    )
+      .then((res) => res.json())
       .then(function (response) {
-        setData(response.data);
+        setData(response);
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(false);
       })
       .finally(() => setLoading(false));
   }
