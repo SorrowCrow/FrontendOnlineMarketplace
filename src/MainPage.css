@@ -1,0 +1,106 @@
+.main-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  
+  .valentine-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: pink;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 80%;
+  }
+  
+  .valentine-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .valentine-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .valentine-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .arrow-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .arrow-btn img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .category {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  
+  .category-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .category-items {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .category-items li {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  
+  @media (max-width: 1024px) {
+    .categories-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .categories-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  
+    .valentine-section {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .arrow-btn {
+      display: none;
+    }
+  }
+  
