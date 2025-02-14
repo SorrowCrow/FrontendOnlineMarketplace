@@ -8,22 +8,79 @@ import {
   Text,
   Link as ChakraLink,
   Icon,
+  Flex,
+  IconButton,
 } from "@chakra-ui/react";
-import { FC, HTMLAttributes, useEffect } from "react";
+import { FC, HTMLAttributes, useEffect, useState } from "react";
 import logo from "../../assets/logo.svg";
 import { Link, useSearchParams } from "react-router-dom";
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { BiChevronLeft, BiChevronRight, BiTrash } from "react-icons/bi";
+import { CgAdd } from "react-icons/cg";
+import { IoAddCircle, IoAddCircleOutline } from "react-icons/io5";
+import { MdOutlineAddShoppingCart, MdShoppingCart } from "react-icons/md";
+
+const ListingAdd: FC<HTMLAttributes<HTMLElement> & { added?: boolean }> = ({
+  added = false,
+  ...props
+}) => {
+  const [hover, setHover] = useState(false);
+
+  return (
+    <IconButton
+      {...props}
+      variant="ghost"
+      cursor="pointer"
+      color="green.solid"
+      userSelect="none"
+      _icon={{ boxSize: "30px" }}
+      _hover={{
+        backgroundColor: "transparent",
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      {added || hover ? <MdShoppingCart /> : <MdOutlineAddShoppingCart />}
+    </IconButton>
+  );
+};
 
 const Listings: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const { loadData, loading, data } = useApi();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    loadData: loadUserData,
+    loading: loadingUser,
+    data: userData,
+  } = useApi();
+
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const page = searchParams.get("page") || undefined;
     const size = searchParams.get("size") || undefined;
     loadData("listings", undefined, { page, size });
   }, [searchParams]);
+
+  const [listings, setListings] = useState<
+    { title: string; price: number; listingID: string }[]
+  >([]);
+
+  const [cart, setCart] = useState<typeof listings>([]);
+
+  useEffect(() => {
+    if (userData && userData.cart) {
+      setCart(userData.cart.listings);
+    } else if (userData && userData.listings) {
+      setCart(userData.listings);
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    if (data && data.content) {
+      setListings(data.content);
+    }
+    loadUserData("getUser");
+  }, [data]);
 
   return (
     <Container mt={1}>
@@ -32,33 +89,67 @@ const Listings: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
 
         <Grid lg={{}}>
           <Box lg={{ pl: 50, borderLeftWidth: "2px" }}>
-            {data &&
-              (data.content as [{ title: string; price: number }]).map(
-                (listing) => (
-                  <Grid
-                    lg={{ gridTemplateColumns: "200px 1fr" }}
-                    borderTopWidth="2px"
-                    pt={5}
-                    pl={30}
-                    pb={5}
+            {listings.map((listing) => (
+              <Grid
+                lg={{ gridTemplateColumns: "200px 1fr" }}
+                borderTopWidth="2px"
+                pt={5}
+                pl={30}
+                pb={5}
+              >
+                <Image
+                  src={logo}
+                  alt=""
+                  bgColor="LightGray"
+                  rounded="md"
+                  h="100%"
+                />
+                <Box ml={30} pt={5}>
+                  <ChakraLink
+                    variant="plain"
+                    color="black"
+                    asChild
+                    display="block"
+                    textDecoration="none"
+                    _hover={{ backgroundColor: "bg.subtle" }}
                   >
-                    <Image
-                      src={logo}
-                      alt=""
-                      bgColor="LightGray"
-                      rounded="md"
-                      h="100%"
-                    />
-                    <Box ml={30} pt={5}>
+                    <Link to={{ pathname: "/listing/" + listing.listingID }}>
                       <Text fontSize={18}>{listing.title}</Text>
                       <Text color="#B12704" fontSize={20} fontWeight={700}>
                         {"EUR "}
                         {listing.price}
                       </Text>
-                    </Box>
-                  </Grid>
-                )
-              )}
+                    </Link>
+                  </ChakraLink>
+                  <Flex gap={3}>
+                    <ListingAdd
+                      added={
+                        cart &&
+                        cart.findIndex(
+                          (item) => item.listingID === listing.listingID
+                        ) !== -1
+                      }
+                      onClick={() =>
+                        loadUserData("addToCart", undefined, undefined, {
+                          listingID: listing.listingID,
+                        })
+                      }
+                    />
+                    <IconButton
+                      variant="ghost"
+                      cursor="pointer"
+                      color="red.600"
+                      _hover={{ backgroundColor: "transparent" }}
+                      userSelect="none"
+                      _icon={{ boxSize: "30px" }}
+                      // onClick={() => removeFromCart(listing.listingID.toString())}
+                    >
+                      <BiTrash />
+                    </IconButton>
+                  </Flex>
+                </Box>
+              </Grid>
+            ))}
             <Box borderBottomWidth="2px"></Box>
           </Box>
           {data && (

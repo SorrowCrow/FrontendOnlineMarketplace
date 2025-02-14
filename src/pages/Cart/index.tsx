@@ -13,12 +13,14 @@ import {
   Flex,
   Icon,
   IconButton,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { Formik, Field as FormikField } from "formik";
 import useApi from "@/hooks/useApi";
 import logo from "../../assets/logo.svg";
 import { BiTrash } from "react-icons/bi";
 import { BsBag } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Cart: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const { loadData, loading, data } = useApi();
@@ -97,68 +99,79 @@ const Cart: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
         </Grid>
 
         {/* Order Summary */}
-        <Grid
-          px={10}
-          py={5}
-          backgroundColor="#E9E9E9"
-          rounded="md"
-          height="fit-content"
-        >
-          <Text fontWeight="bold">Order Summary</Text>
-          <Flex justifyContent="space-between">
-            <Text>Price</Text>
-
-            <Text>
-              €
-              {0 +
-                Number(
-                  listings
-                    .reduce(
-                      (prev, cur) => Number(prev.toFixed(2)) + cur.price,
-                      0
-                    )
-                    .toFixed(2)
-                )}
-            </Text>
-          </Flex>
-          <Flex justifyContent="space-between">
-            <Text>Shipping</Text>
-
-            <Text>0</Text>
-          </Flex>
-          <Flex
-            justifyContent="space-between"
-            borderBottomWidth="1px"
-            borderColor="blackAlpha.300"
-            borderStyle="solid"
+        <Box>
+          <ChakraLink
+            variant="plain"
+            color="black"
+            asChild
+            _hover={{ backgroundColor: "bg.subtle" }}
+            justifySelf="end"
           >
-            <Text>Tax</Text>
+            <Link to={{ pathname: "/listings" }}>Back to shopping</Link>
+          </ChakraLink>
+          <Grid
+            px={10}
+            py={5}
+            backgroundColor="#E9E9E9"
+            rounded="md"
+            height="fit-content"
+          >
+            <Text fontWeight="bold">Order Summary</Text>
+            <Flex justifyContent="space-between">
+              <Text>Price</Text>
 
-            <Text>0</Text>
-          </Flex>
-          <Flex justifyContent="space-between">
-            <Text fontWeight="bold">Total Price</Text>
+              <Text>
+                €
+                {0 +
+                  Number(
+                    listings
+                      .reduce(
+                        (prev, cur) => Number(prev.toFixed(2)) + cur.price,
+                        0
+                      )
+                      .toFixed(2)
+                  )}
+              </Text>
+            </Flex>
+            <Flex justifyContent="space-between">
+              <Text>Shipping</Text>
 
-            <Text>
-              €
-              {0 +
-                Number(
-                  listings
-                    .reduce(
-                      (prev, cur) => Number(prev.toFixed(2)) + cur.price,
-                      0
-                    )
-                    .toFixed(2)
-                )}
-            </Text>
-          </Flex>
-          <Button rounded="md" onClick={() => loadData("checkout")}>
-            <Icon>
-              <BsBag />
-            </Icon>{" "}
-            Checkout
-          </Button>
-        </Grid>
+              <Text>0</Text>
+            </Flex>
+            <Flex
+              justifyContent="space-between"
+              borderBottomWidth="1px"
+              borderColor="blackAlpha.300"
+              borderStyle="solid"
+            >
+              <Text>Tax</Text>
+
+              <Text>0</Text>
+            </Flex>
+            <Flex justifyContent="space-between">
+              <Text fontWeight="bold">Total Price</Text>
+
+              <Text>
+                €
+                {0 +
+                  Number(
+                    listings
+                      .reduce(
+                        (prev, cur) => Number(prev.toFixed(2)) + cur.price,
+                        0
+                      )
+                      .toFixed(2)
+                  )}
+              </Text>
+            </Flex>
+            <Button rounded="md" onClick={() => loadData("checkout")}>
+              <Icon>
+                <BsBag />
+              </Icon>{" "}
+              Checkout
+            </Button>
+          </Grid>
+        </Box>
       </Grid>
     </Container>
   );
