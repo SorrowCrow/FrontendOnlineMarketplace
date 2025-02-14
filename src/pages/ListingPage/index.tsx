@@ -113,7 +113,7 @@ const ListingPage: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                   <Button
                     rounded="md"
                     onClick={() =>
-                      loadData("removeFromCart", undefined, undefined, {
+                      loadCartData("removeFromCart", undefined, undefined, {
                         listingID: listing.listingID.toString(),
                       })
                     }

@@ -22,7 +22,7 @@ const LogInForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
     if (data && data.message === "success") {
       setTimeout(() => {
         navigate("/listings");
-      }, 2001);
+      }, 3001);
     }
   }, [data]);
 
