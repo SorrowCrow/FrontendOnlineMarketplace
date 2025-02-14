@@ -183,38 +183,36 @@ const useApi = () => {
     path?: UserInput[keyof UserInput]
   ): Promise<void> {
     setLoading(true);
-    setTimeout(() => {
-      fetch(
-        apiUrl +
-          ApiRequests[request].path +
-          (path
-            ? Object.values(JSON.parse(JSON.stringify(path)))
-                .join("/")
-                .toString()
-            : "") +
-          (params
-            ? "?" +
-              new URLSearchParams(JSON.parse(JSON.stringify(params))).toString()
-            : ""),
-        {
-          method: ApiRequests[request].method,
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      )
-        .then((res) => res.json())
-        .then(function (response) {
-          setData(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-          setLoading(false);
-        })
-        .finally(() => setLoading(false));
-    }, 1000);
+    fetch(
+      apiUrl +
+        ApiRequests[request].path +
+        (path
+          ? Object.values(JSON.parse(JSON.stringify(path)))
+              .join("/")
+              .toString()
+          : "") +
+        (params
+          ? "?" +
+            new URLSearchParams(JSON.parse(JSON.stringify(params))).toString()
+          : ""),
+      {
+        method: ApiRequests[request].method,
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    )
+      .then((res) => res.json())
+      .then(function (response) {
+        setData(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setLoading(false);
+      })
+      .finally(() => setLoading(false));
   }
 
   return { data, loading, loadData };
