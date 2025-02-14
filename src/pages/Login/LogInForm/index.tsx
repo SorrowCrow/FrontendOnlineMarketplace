@@ -1,11 +1,30 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import useApi from "@/hooks/useApi";
-import { Box, Button, Field, Input, Text, VStack } from "@chakra-ui/react";
+import {
+  Alert,
+  Box,
+  Button,
+  Field,
+  Input,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Formik, Field as FormikField } from "formik";
 import { FC, HTMLAttributes, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LogInForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const { loadData, loading, data } = useApi();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data && data.message === "success") {
+      setTimeout(() => {
+        navigate("/listings");
+      }, 2001);
+    }
+  }, [data]);
 
   return (
     <Box lg={{ pr: 2 }}>
@@ -13,7 +32,6 @@ const LogInForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
         initialValues={{
           email: "",
           password: "",
-          rememberMe: false,
         }}
         onSubmit={(values) => {
           loadData("signin", {
@@ -60,13 +78,6 @@ const LogInForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                 />
                 <Field.ErrorText>{errors.password}</Field.ErrorText>
               </Field.Root>
-              <Field.Root>
-                <FormikField as={Checkbox} id="rememberMe" name="rememberMe">
-                  <span style={{ marginLeft: 10, verticalAlign: "top" }}>
-                    Remember me?
-                  </span>
-                </FormikField>
-              </Field.Root>
               <Button
                 type="submit"
                 width="full"
@@ -76,6 +87,34 @@ const LogInForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               >
                 Sign in
               </Button>
+
+              {loading ? (
+                <Alert.Root>
+                  <Alert.Indicator>
+                    <Spinner size="sm" />
+                  </Alert.Indicator>
+                  <Alert.Content>
+                    <Alert.Title>Loading </Alert.Title>
+                    <Alert.Description />
+                  </Alert.Content>
+                </Alert.Root>
+              ) : data && data.message && data.message === "success" ? (
+                <Alert.Root status="success">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <Alert.Title>Login successful </Alert.Title>
+                    <Alert.Description />
+                  </Alert.Content>
+                </Alert.Root>
+              ) : data ? (
+                <Alert.Root status="error">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <Alert.Title>Login unsuccessful</Alert.Title>
+                    <Alert.Description />
+                  </Alert.Content>
+                </Alert.Root>
+              ) : undefined}
             </VStack>
           </form>
         )}

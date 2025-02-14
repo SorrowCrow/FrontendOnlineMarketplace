@@ -5,6 +5,8 @@ import searchIcon from "./assets/search-svgrepo-com.svg";
 import languageIcon from "./assets/icons8-world-24.png";
 import userIcon from "./assets/icons8-male-user-48.png";
 import cartIcon from "./assets/icons8-cart-32.png";
+import { Image, Link as ChakraLink } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -37,8 +39,19 @@ const Header = () => {
         {/* иконки справа */}
         <div className="nav-icons">
           <img src={languageIcon} alt="Language" className="icon-image" />
-          <img src={userIcon} alt="User" className="icon-image" />
-          <img src={cartIcon} alt="Cart" className="icon-image" />
+
+          {/* <img src={userIcon} alt="User" className="icon-image" /> */}
+          <ChakraLink variant="plain" color="black" asChild justifySelf="end">
+            <Link to={{ pathname: "/login" }}>
+              <Image src={userIcon} alt="User" className="icon-image" />
+            </Link>
+          </ChakraLink>
+
+          <ChakraLink variant="plain" color="black" asChild justifySelf="end">
+            <Link to={{ pathname: "/cart" }}>
+              <Image src={cartIcon} alt="Cart" className="icon-image" />
+            </Link>
+          </ChakraLink>
         </div>
       </div>
 

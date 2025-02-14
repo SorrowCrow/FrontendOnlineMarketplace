@@ -6,6 +6,10 @@ import CreateListing from "./pages/CreateListing";
 import User from "./pages/User";
 import Header from "./Header.js";
 import Cart from "./pages/Cart/index.js";
+import { useRef } from "react";
+import VerifyEmail from "./pages/VerifyEmail/index.js";
+import Footer from "./Footer.js";
+import ListingPage from "./pages/ListingPage/index.js";
 
 function App() {
   return (
@@ -17,6 +21,7 @@ function App() {
             <>
               <Header />
               <Outlet />
+              <Footer />
             </>
             // <div className="container">
             //   <Outlet />
@@ -25,10 +30,13 @@ function App() {
         >
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Login />} />
           <Route path="listings" element={<Listings />} />
           <Route path="createListing" element={<CreateListing />} />
           <Route path="user" element={<User />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="verifyEmail" element={<VerifyEmail />} />
+          <Route path="listing/:id" element={<ListingPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,11 +1,22 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import useApi from "@/hooks/useApi";
-import { Box, Button, Field, Input, Text, VStack } from "@chakra-ui/react";
+import {
+  Alert,
+  Box,
+  Button,
+  Field,
+  Input,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Formik, Field as FormikField } from "formik";
-import { FC, HTMLAttributes } from "react";
+import { FC, HTMLAttributes, useState } from "react";
 
 const SignUpForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const { loadData, loading, data } = useApi();
+
+  const [email, setEmail] = useState<string>();
 
   return (
     <Box
@@ -26,7 +37,6 @@ const SignUpForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           password: "",
           name: "",
           surname: "",
-          termsAndAgreement: false,
         }}
         onSubmit={(values) => {
           loadData("signup", {
@@ -35,6 +45,7 @@ const SignUpForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
             name: values.name,
             surname: values.surname,
           });
+          setEmail(values.signupemail);
         }}
       >
         {({ handleSubmit, errors, touched }) => (
@@ -94,13 +105,6 @@ const SignUpForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                   rounded="md"
                 />
               </Field.Root>
-              <Field.Root>
-                <FormikField as={Checkbox} id="rememberMe" name="rememberMe">
-                  <span style={{ marginLeft: 10, verticalAlign: "top" }}>
-                    Terms and conditions
-                  </span>
-                </FormikField>
-              </Field.Root>
               <Button
                 type="submit"
                 width="full"
@@ -110,6 +114,58 @@ const SignUpForm: FC<HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               >
                 Sign up
               </Button>
+              {loading ? (
+                <Alert.Root>
+                  <Alert.Indicator>
+                    <Spinner size="sm" />
+                  </Alert.Indicator>
+                  <Alert.Content>
+                    <Alert.Title>Loading </Alert.Title>
+                    <Alert.Description />
+                  </Alert.Content>
+                </Alert.Root>
+              ) : data && data.message && data.message === "success" ? (
+                <Alert.Root status="success">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <Alert.Title>
+                      Signup successful, email for verification has been sent
+                    </Alert.Title>
+                    <Alert.Description>
+                      {email && (
+                        <Button
+                          onClick={() =>
+                            loadData("resendVerification", undefined, { email })
+                          }
+                        >
+                          Resend
+                        </Button>
+                      )}
+                    </Alert.Description>
+                    <Alert.Description />
+                  </Alert.Content>
+                </Alert.Root>
+              ) : data &&
+                data.message &&
+                data.message === "Verification email resent successfully!" ? (
+                <Alert.Root status="success">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <Alert.Title>
+                      Verification email resent successfully!
+                    </Alert.Title>
+                    <Alert.Description />
+                  </Alert.Content>
+                </Alert.Root>
+              ) : data ? (
+                <Alert.Root status="error">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <Alert.Title>Signup unsuccessful</Alert.Title>
+                    <Alert.Description />
+                  </Alert.Content>
+                </Alert.Root>
+              ) : undefined}
             </VStack>
           </form>
         )}
