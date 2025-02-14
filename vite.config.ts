@@ -4,6 +4,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/FrontendOnlineMarketplace/",
   plugins: [
     {
       name: "treat-js-files-as-jsx",
